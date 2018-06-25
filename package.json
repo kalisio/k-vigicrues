@@ -1,0 +1,38 @@
+{
+  "name": "kontainer-vigicrue",
+  "description": "",
+  "version": "0.1.0",
+  "homepage": "https://github.com/kalisio/kontainer-vigicrue",
+  "keywords": [
+    "krawler",
+    "kargo",
+    "feathers",
+    "feathers-plugin",
+    "gis",
+    "vigicrue"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kalisio/kontainer-vigicrue.git"
+  },
+  "author": {
+    "name": "Kalisio",
+    "url": "https://github.com/kalisio"
+  },
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/kalisio/kontainer-vigicrue/issues"
+  },
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "dependencies": {
+    "@kalisio/krawler": "^0.3.0",
+    "debug": "^3.1.0",
+    "lodash": "^4.17.5"
+  },
+  "devDependencies": {}
+}

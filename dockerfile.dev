@@ -1,0 +1,13 @@
+FROM  kalisio/krawler
+
+ENV DEBUG=kontainer*
+
+RUN yarn link
+
+WORKDIR /opt/kontainer-vigicrue
+COPY . /opt/kontainer-vigicrue
+
+RUN yarn install
+RUN yarn link '@kalisio/krawler'
+
+CMD node .
