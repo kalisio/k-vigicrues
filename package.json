@@ -8,9 +8,9 @@
     "kargo",
     "feathers",
     "feathers-plugin",
-    "gis",
     "vigicrue"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/kalisio/kontainer-vigicrue.git"
@@ -27,7 +27,7 @@
     "node": ">= 8.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Warning: no test specified\""
   },
   "dependencies": {
     "@kalisio/krawler": "^0.3.0",
