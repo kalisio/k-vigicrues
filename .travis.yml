@@ -15,5 +15,5 @@ after_script:
 - export VERSION=$(node -p -e "require('./package.json').version")
 - docker build .
 - docker tag kalisio/kontainer-vigicrue kalisio/kontainer-vigicrue:$VERSION
-- docker login -u="$DOCKER_HUB_USER" -p="$DOCKER_HUB_PASSWORD"
+- docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
 - docker push kalisio/kontainer-vigicrue:$VERSION
