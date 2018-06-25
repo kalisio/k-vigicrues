@@ -13,7 +13,7 @@ notifications:
     on_failure: always
 after_script:
 - export VERSION=$(node -p -e "require('./package.json').version")
-- docker build .
+- docker build -t kalisio/kontainer-vigicrue .
 - docker tag kalisio/kontainer-vigicrue kalisio/kontainer-vigicrue:$VERSION
 - docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
 - docker push kalisio/kontainer-vigicrue:$VERSION
