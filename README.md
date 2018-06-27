@@ -1,14 +1,35 @@
-# kontainer-vigicrue
+# k-vigicrues
 
-A Krawler based service to download data from French flood warning system [Vigicrue](https://www.vigicrues.gouv.fr/)
+A Krawler based service to download data from French flood warning system [Vigicrues](https://www.vigicrues.gouv.fr/)
 
-## Required environment variables
+## Getting started
+
+
+## Deployment
 
 - DOCKER_HUB_LOGIN
 - DOCKER_HUB_PASSWORD
 - S3_ACCESS_KEY
 - S3_SECRET_ACCESS_KEY
 - S3_BUCKET
+
+
+
+## Contributing
+
+Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](https://semver.org/) for versioning. For the versions available, see the tags on this repository.
+
+## Authors
+
+This project is sponsored by ![Kalisio](https://s3.eu-central-1.amazonaws.com/kalisioscope/kalisio/kalisio-logo-black-256x84.png)
+
+## License
+
+This project is licensed under the MIT License - see the [license file](./LICENCE.md) for details
 
 
 
