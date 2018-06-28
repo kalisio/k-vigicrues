@@ -9,5 +9,5 @@ COPY . /opt/k-vigicrues
 
 RUN npm install -g @kalisio/krawler@0.5.2
 
-CMD krawler "* */30 * * * *" jobfile.js
+CMD krawler "* */30 * * * *" /opt/k-vigicrues/jobfile.js
 
