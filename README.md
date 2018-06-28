@@ -20,7 +20,9 @@ We use [SemVer](https://semver.org/) for versioning. For the versions available,
 
 ## Authors
 
-This project is sponsored by ![Kalisio](https://s3.eu-central-1.amazonaws.com/kalisioscope/kalisio/kalisio-logo-black-256x84.png)
+This project is sponsored by 
+
+![Kalisio](https://s3.eu-central-1.amazonaws.com/kalisioscope/kalisio/kalisio-logo-black-256x84.png)
 
 ## License
 
