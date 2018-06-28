@@ -3,12 +3,14 @@ FROM  node:8
 MAINTAINER Kalisio <contact@kalisio.xyz>
 
 ENV DEBUG=
-USER root
 
-WORKDIR /opt/k-vigicrues
-COPY . /opt/k-vigicrues
+RUN mkdir /home/node/.npm-global
+ENV PATH=/home/node/.npm-global/bin:$PATH
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 
-RUN npm install -g @kalisio/krawler@0.5.2
+RUN npm install -g @kalisio/krawler@0.5.2 --unsafe
 
-CMD krawler "* */30 * * * *" /opt/k-vigicrues/jobfile.js
+COPY jobfile.js .
+
+CMD krawler "* */30 * * * *" jobfile.js
 
