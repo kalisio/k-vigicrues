@@ -3,7 +3,7 @@ FROM  node:8
 MAINTAINER Kalisio <contact@kalisio.xyz>
 
 ENV DEBUG=
-USER node
+USER root
 
 WORKDIR /opt/k-vigicrues
 COPY . /opt/k-vigicrues
