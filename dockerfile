@@ -4,10 +4,10 @@ MAINTAINER Kalisio <contact@kalisio.xyz>
 
 ENV DEBUG=
 
-WORKDIR /opt/kontainer-vigicrue
-COPY . /opt/kontainer-vigicrue
+WORKDIR /opt/k-vigicrues
+COPY . /opt/k-vigicrues
 
-RUN yarn install
+RUN npm install -g @kalisio/krawler@0.5.2
 
 CMD krawler "* */30 * * * *" jobfile.js
 

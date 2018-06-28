@@ -1,19 +1,19 @@
 {
-  "name": "kontainer-vigicrue",
+  "name": "k-vigicrues",
   "description": "",
-  "version": "0.2.0",
-  "homepage": "https://github.com/kalisio/kontainer-vigicrue",
+  "version": "0.1.0",
+  "homepage": "https://github.com/kalisio/k-vigicrues",
   "keywords": [
     "krawler",
     "kargo",
     "feathers",
     "feathers-plugin",
-    "vigicrue"
+    "vigicrues"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/kalisio/kontainer-vigicrue.git"
+    "url": "git://github.com/kalisio/k-vigicrues.git"
   },
   "author": {
     "name": "Kalisio",
@@ -21,18 +21,11 @@
   },
   "contributors": [],
   "bugs": {
-    "url": "https://github.com/kalisio/kontainer-vigicrue/issues"
-  },
-  "engines": {
-    "node": ">= 8.0.0"
+    "url": "https://github.com/kalisio/k-vigicrues/issues"
   },
   "scripts": {
     "test": "echo \"Warning: no test specified\""
   },
-  "dependencies": {
-    "@kalisio/krawler": "^0.5.1",
-    "debug": "^3.1.0",
-    "lodash": "^4.17.5"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
