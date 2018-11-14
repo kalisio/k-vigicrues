@@ -13,8 +13,6 @@ RUN npm install -g @kalisio/krawler@0.5.2 --unsafe
 COPY jobfile-stations.js .
 COPY jobfile-sections.js .
 COPY jobfile-stations-data.js .
+COPY vigicrues.sh .
 
-CMD krawler --port 3030 --cron "0 0 0 */1 * *" jobfile-stations.js
-CMD krawler --port 3031 --cron "0 0 */1 * * *" jobfile-sections.js
-CMD krawler --port 3032 --cron "0 0 */1 * * *" jobfile-stations-data.js
-
+CMD [ "sh", "-c", "./vigicrues.sh" ]
