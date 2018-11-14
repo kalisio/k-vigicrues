@@ -2,16 +2,17 @@ const path = require('path')
 const fs = require('fs')
 
 module.exports = {
-  id: 'vigicrues',
+  id: 'vigicrues-stations',
   store: 'memory',
   options: {
     //workersLimit: 1
   },
   tasks: [{
-    id: 'vigicrues',
+    id: 'vigicrues/stations',
     type: 'http',
     options: {
-      url: 'https://www.vigicrues.gouv.fr/services/vigicrues.geojson'
+      // https://www.data.gouv.fr/fr/datasets/stations-hydrometriques-metropole/
+      url: 'https://www.data.gouv.fr/fr/datasets/r/843df751-15eb-4871-abb1-f2e51659a697'
     }
   }],
   hooks: {
@@ -20,13 +21,8 @@ module.exports = {
         readJson: {},
         transformJson: {
           transformPath: 'features',
-          filter: { 'properties.NivSituVigiCruEnt': { $gt: 0 } }, // Filter according to alert level
-          // Leaflet style
-          //mapping: { 'properties.NivSituVigiCruEnt': { path: 'style.color', values: { 1: 'green', 2: 'yellow', 3: 'orange', 4: 'red' }, delete: false } }
-          // Simplespec style
-          mapping: { 'properties.NivSituVigiCruEnt': { path: 'properties.stroke', values: { 1: '#00FF00', 2: '#FFFF00', 3: '#FFBF00', 4: '#FF0000' }, delete: false } }
+          filter: { 'properties.LbAffiStaH': { $regex: '^Vigicrues' } }
         },
-        reprojectGeoJson: { from: 'EPSG:2154' },
         /* To debug */
         writeJsonFS: {
           hook: 'writeJson',
@@ -48,7 +44,7 @@ module.exports = {
         }, {
           id: 'fs',
           options: {
-            path: path.join(__dirname, '..', 'output')
+            path: __dirname
           }
         }, {
           id: 's3',

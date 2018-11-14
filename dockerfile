@@ -10,7 +10,11 @@ ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 
 RUN npm install -g @kalisio/krawler@0.5.2 --unsafe
 
-COPY jobfile.js .
+COPY jobfile-stations.js .
+COPY jobfile-sections.js .
+COPY jobfile-stations-data.js .
 
-CMD krawler --cron "* */30 * * * *" jobfile.js
+CMD krawler --port 3030 --cron "0 0 0 */1 * *" jobfile-stations.js
+CMD krawler --port 3031 --cron "0 0 */1 * * *" jobfile-sections.js
+CMD krawler --port 3032 --cron "0 0 */1 * * *" jobfile-stations-data.js
 
