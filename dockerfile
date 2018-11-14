@@ -13,6 +13,8 @@ RUN npm install -g @kalisio/krawler@0.5.2 --unsafe
 COPY jobfile-stations.js .
 COPY jobfile-sections.js .
 COPY jobfile-stations-data.js .
-COPY vigicrues.sh .
 
-CMD [ "sh", "-c", "./vigicrues.sh" ]
+COPY vigicrues.sh .
+RUN chmod +x vigicrues.sh
+
+CMD [ "sh", "./vigicrues.sh" ]
