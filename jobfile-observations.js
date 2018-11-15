@@ -34,7 +34,7 @@ let generateTasks = (options) => {
 hooks.registerHook('generateTasks', generateTasks)
 
 module.exports = {
-  id: 'vigicrues-stations-data',
+  id: 'vigicrues-observations',
   store: 'memory',
   options: {
     workersLimit: 4,

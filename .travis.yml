@@ -13,7 +13,13 @@ notifications:
     on_failure: always
 script:
 - export VERSION=$(node -p -e "require('./package.json').version")
-- docker build -t kalisio/k-vigicrues .
-- docker tag kalisio/k-vigicrues kalisio/k-vigicrues:$VERSION
+- docker build -f dockerfile.stations -t kalisio/k-vigicrues-stations .
+- docker tag kalisio/k-vigicrues-stations kalisio/k-vigicrues-stations:$VERSION
+- docker build -f dockerfile.sections -t kalisio/k-vigicrues-sections .
+- docker tag kalisio/k-vigicrues-sections kalisio/k-vigicrues-sections:$VERSION
+- docker build -f dockerfile.observations -t kalisio/k-vigicrues-observations .
+- docker tag kalisio/k-vigicrues-observations kalisio/k-vigicrues-observations:$VERSION
 - docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
-- docker push kalisio/k-vigicrues:$VERSION
+- docker push kalisio/k-vigicrues-stations:$VERSION
+- docker push kalisio/k-vigicrues-sections:$VERSION
+- docker push kalisio/k-vigicrues-observations:$VERSION
