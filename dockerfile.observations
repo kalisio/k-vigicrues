@@ -7,6 +7,7 @@ ENV DEBUG=
 RUN mkdir /home/node/.npm-global
 ENV PATH=/home/node/.npm-global/bin:$PATH
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV NODE_PATH=/home/node/.npm-global
 
 RUN npm install -g @kalisio/krawler@0.5.2 --unsafe
 
