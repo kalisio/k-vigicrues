@@ -1,11 +1,6 @@
 const krawler = require('@kalisio/krawler')
 const hooks = krawler.hooks
-const path = require('path')
-const makeDebug = require('debug')
 const _ = require('lodash')
-//const fs = require('fs')
-
-const debug = makeDebug('krawler:examples')
 
 const stations = require('./vigicrues/stations.json').features
 const baseUrl = 'https://www.vigicrues.gouv.fr/services/observations.json?'
@@ -15,7 +10,6 @@ let generateTasks = (options) => {
   return (hook) => {
     let tasks = []
     options.stations.forEach(station => {
-      debug('Generate tasks for station', station)
       options.series.forEach(serie => {
         let task = {
           id: station.properties.CdStationH + '-' + serie,

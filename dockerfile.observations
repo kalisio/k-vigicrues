@@ -10,6 +10,7 @@ ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV NODE_PATH=/home/node/.npm-global/lib/node_modules
 
 RUN npm install -g @kalisio/krawler@0.7.0 --unsafe
+RUN npm install -g lodash@4.17.10
 
 COPY jobfile-observations.js .
 
