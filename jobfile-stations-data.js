@@ -1,4 +1,4 @@
-const krawler = require('../../lib')
+const krawler = require('@kalisio/krawler')
 const hooks = krawler.hooks
 const path = require('path')
 const makeDebug = require('debug')
