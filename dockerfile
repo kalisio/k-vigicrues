@@ -17,4 +17,4 @@ COPY jobfile-stations-data.js .
 COPY vigicrues.sh .
 RUN chmod +x vigicrues.sh
 
-CMD [ "sh", "./vigicrues.sh" ]
+CMD [ "sh", "-c", "./vigicrues.sh" ]
