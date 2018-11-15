@@ -2,9 +2,6 @@ const krawler = require('@kalisio/krawler')
 const hooks = krawler.hooks
 const _ = require('lodash')
 
-const stations = require('./vigicrues/stations.json').features
-const baseUrl = 'https://www.vigicrues.gouv.fr/services/observations.json?'
-
 // Create a custom hook to generate tasks
 let generateTasks = (options) => {
   return (hook) => {
@@ -20,7 +17,6 @@ let generateTasks = (options) => {
         tasks.push(task)
       })
     })
-    debug('Generated download tasks', tasks)
     hook.data.tasks = tasks
     return hook
   }
@@ -77,9 +73,9 @@ module.exports = {
           }
         }],
         generateTasks: {
-          baseUrl: baseUrl,
+          baseUrl: 'https://www.vigicrues.gouv.fr/services/observations.json?',
           series: [ 'H', 'Q'],
-          stations: stations
+          stations: require('./vigicrues/stations.json').features
         }
       },
       after: {
