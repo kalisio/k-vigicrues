@@ -12,6 +12,6 @@ RUN npm install -g @kalisio/krawler@0.5.2 --unsafe
 
 COPY jobfile-sections.js .
 
-CMD krawler --cron "0 0 * * * *" jobfile-sections.js
+CMD krawler --cron "0 5 * * * *" jobfile-sections.js
 
 

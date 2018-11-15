@@ -37,7 +37,7 @@ module.exports = {
   id: 'vigicrues-observations',
   store: 'memory',
   options: {
-    workersLimit: 4,
+    workersLimit: 2,
     faultTolerant: true
   },
   taskTemplate: {
@@ -59,7 +59,8 @@ module.exports = {
           storageOptions: {
             ACL: 'public-read'
           }
-        }
+        },
+        clearData: {}
       }
     },
     jobs: {

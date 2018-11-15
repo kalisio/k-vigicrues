@@ -5,7 +5,8 @@ module.exports = {
   id: 'vigicrues-stations',
   store: 'memory',
   options: {
-    //workersLimit: 1
+    workersLimit: 1,
+    faultTolerant: true
   },
   tasks: [{
     id: 'vigicrues/stations',
@@ -34,7 +35,8 @@ module.exports = {
           storageOptions: {
             ACL: 'public-read'
           }
-        }
+        },
+        clearData: {}
       }
     },
     jobs: {
