@@ -1,5 +1,5 @@
 #!/bin/bash
-source travis.env.sh
+source .travis.env.sh
 
 # Build Stations image
 docker build -f dockerfile.stations -t kalisio/k-vigicrues-stations .
