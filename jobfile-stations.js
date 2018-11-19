@@ -1,3 +1,5 @@
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
+
 module.exports = {
   id: 'vigicrues-stations',
   store: 'memory',
@@ -21,17 +23,24 @@ module.exports = {
           transformPath: 'features',
           filter: { 'properties.LbAffiStaH': { $regex: '^Vigicrues' } }
         },
-        /* To debug */
+        writeJsonMemory: {
+          hook: 'writeJson',
+          key: '<%= id %>',
+          store: 'memory'
+        },
+        gzipToStore: {
+          input: { key: '<%= id %>', store: 'memory' },
+          output: { key: '<%= id %>', store: 's3',
+            params: { ACL: 'public-read', ContentType: 'application/json', ContentEncoding: 'gzip' }
+          }
+        },
         writeJsonFS: {
           hook: 'writeJson',
+          key: '<%= id %>.json',
           store: 'fs'
         },
-        writeJsonS3: {
-          hook: 'writeJson',
-          store: 's3',
-          storageOptions: {
-            ACL: 'public-read'
-          }
+        writeMongoCollection: {
+          collection: 'stations'
         },
         clearData: {}
       }
@@ -54,9 +63,26 @@ module.exports = {
             },
             bucket: process.env.S3_BUCKET
           }
-        }]
+        }],
+        connectMongo: {
+          url: dbUrl,
+          // Required so that client is forwarded from job to tasks
+          clientPath: 'taskTemplate.client'
+        },
+        dropMongoCollection: {
+          clientPath: 'taskTemplate.client',
+          collection: 'stations'
+        },
+        createMongoCollection: {
+          clientPath: 'taskTemplate.client',
+          collection: 'stations',
+          indices: [{ CdStationH: 1 }, { geometry: '2dsphere' }]
+        }
       },
       after: {
+        disconnectMongo: {
+          clientPath: 'taskTemplate.client'
+        },
         removeStores: ['memory', 'fs', 's3']
       }
     }

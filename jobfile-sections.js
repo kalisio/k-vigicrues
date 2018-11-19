@@ -1,3 +1,5 @@
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
+
 module.exports = {
   id: 'vigicrues-sections',
   store: 'memory',
@@ -16,29 +18,39 @@ module.exports = {
     tasks: {
       after: {
         readJson: {},
-        transformJson: {
+        reprojectGeoJson: { from: 'EPSG:2154' },
+        omitCRS: {
+          hook: 'transformJson',
+          omit: ['crs']
+        },
+        applyStyle: {
+          hook: 'transformJson',
           transformPath: 'features',
           filter: { 'properties.NivSituVigiCruEnt': { $gt: 0 } }, // Filter according to alert level
           // Leaflet style
           //mapping: { 'properties.NivSituVigiCruEnt': { path: 'style.color', values: { 1: 'green', 2: 'yellow', 3: 'orange', 4: 'red' }, delete: false } }
           // Simplespec style
           mapping: { 'properties.NivSituVigiCruEnt': { path: 'properties.stroke', values: { 1: '#00FF00', 2: '#FFFF00', 3: '#FFBF00', 4: '#FF0000' }, delete: false } }
-        },
-        reprojectGeoJson: { from: 'EPSG:2154' },
-        transformJson: {
-          omit: ['crs']
-        },
+        },   
         /* To debug */
+        writeJsonMemory: {
+          hook: 'writeJson',
+          key: '<%= id %>',
+          store: 'memory'
+        },
+        gzipToStore: {
+          input: { key: '<%= id %>', store: 'memory' },
+          output: { key: '<%= id %>', store: 's3',
+            params: { ACL: 'public-read', ContentType: 'application/json', ContentEncoding: 'gzip' }
+          }
+        },
         writeJsonFS: {
           hook: 'writeJson',
+          key: '<%= id %>.json',
           store: 'fs'
         },
-        writeJsonS3: {
-          hook: 'writeJson',
-          store: 's3',
-          storageOptions: {
-            ACL: 'public-read'
-          }
+        writeMongoCollection: {
+          collection: 'sections'
         },
         clearData: {}
       }
@@ -61,9 +73,26 @@ module.exports = {
             },
             bucket: process.env.S3_BUCKET
           }
-        }]
+        }],
+        connectMongo: {
+          url: dbUrl,
+          // Required so that client is forwarded from job to tasks
+          clientPath: 'taskTemplate.client'
+        },
+        dropMongoCollection: {
+          clientPath: 'taskTemplate.client',
+          collection: 'sections'
+        },
+        createMongoCollection: {
+          clientPath: 'taskTemplate.client',
+          collection: 'sections',
+          indices: [{ gid: 1 }]
+        }
       },
       after: {
+        disconnectMongo: {
+          clientPath: 'taskTemplate.client'
+        },
         removeStores: ['memory', 'fs', 's3']
       }
     }
