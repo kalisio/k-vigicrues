@@ -30,7 +30,7 @@ module.exports = {
   id: 'vigicrues-observations',
   store: 'memory',
   options: {
-    workersLimit: 2,
+    workersLimit: 4,
     faultTolerant: true
   },
   taskTemplate: {
@@ -90,6 +90,7 @@ module.exports = {
         },
         writeMongoCollection: {
           dataPath: 'result.data.features',
+          chunkSize: 100,
           collection: 'observations',
           transform: { unitMapping: { timestamp: { asDate: 'utc' } } }
         },
