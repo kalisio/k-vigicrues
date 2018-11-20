@@ -5,7 +5,7 @@ module.exports = {
   store: 'memory',
   options: {
     workersLimit: 1,
-    faultTolerant: true
+    faultTolerant: false
   },
   tasks: [{
     id: 'vigicrues/stations',
