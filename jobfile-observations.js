@@ -90,7 +90,7 @@ module.exports = {
         },
         writeMongoCollection: {
           dataPath: 'result.data.features',
-          chunkSize: 100,
+          chunkSize: 512,
           collection: 'observations',
           transform: { unitMapping: { timestamp: { asDate: 'utc' } } }
         },
