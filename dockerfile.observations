@@ -11,4 +11,4 @@ ENV NODE_PATH=/krawler/node_modules
 
 COPY jobfile-observations.js .
 
-CMD node ./krawler --cron "0 10 * * * *" jobfile-observations.js
+CMD node ./krawler --cron "0 10,40 * * * *" jobfile-observations.js
