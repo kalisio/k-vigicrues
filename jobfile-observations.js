@@ -80,7 +80,7 @@ module.exports = {
         },
         writeMongoCollection: {
           chunkSize: 512,
-          collection: 'observations',
+          collection: 'vigicrues-observations',
           transform: { unitMapping: { time: { asDate: 'utc' } } }
         },
         clearData: {}
@@ -103,7 +103,7 @@ module.exports = {
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'observations',
+          collection: 'vigicrues-observations',
           indices: [ 
             [{ time: 1 }, { expireAfterSeconds: 604800 }], // 7 days
             { CdStationH: 1 }, 

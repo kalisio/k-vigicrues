@@ -40,7 +40,7 @@ module.exports = {
           store: 'fs'
         },
         writeMongoCollection: {
-          collection: 'stations'
+          collection: 'vigicrues-stations'
         },
         clearData: {}
       }
@@ -71,11 +71,11 @@ module.exports = {
         },
         dropMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'stations'
+          collection: 'vigicrues-stations'
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'stations',
+          collection: 'vigicrues-stations',
           indices: [{ CdStationH: 1 }, { geometry: '2dsphere' }]
         }
       },

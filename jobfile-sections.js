@@ -50,7 +50,7 @@ module.exports = {
           store: 'fs'
         },
         writeMongoCollection: {
-          collection: 'sections'
+          collection: 'vigicrues-sections'
         },
         clearData: {}
       }
@@ -81,11 +81,11 @@ module.exports = {
         },
         dropMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'sections'
+          collection: 'vigicrues-sections'
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'sections',
+          collection: 'vigicrues-sections',
           indices: [{ gid: 1 }]
         }
       },
