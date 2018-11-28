@@ -106,7 +106,7 @@ module.exports = {
           collection: 'vigicrues-observations',
           indices: [ 
             [{ time: 1 }, { expireAfterSeconds: 604800 }], // 7 days
-            { CdStationH: 1 }, 
+            { 'properties.CdStationH': 1 }, 
             { geometry: '2dsphere' }
           ],
         },
