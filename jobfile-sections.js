@@ -40,14 +40,7 @@ module.exports = {
         },
         gzipToStore: {
           input: { key: '<%= id %>', store: 'memory' },
-          output: { key: '<%= id %>', store: 's3',
-            params: { ACL: 'public-read', ContentType: 'application/json', ContentEncoding: 'gzip' }
-          }
-        },
-        writeJsonFS: {
-          hook: 'writeJson',
-          key: '<%= id %>.json',
-          store: 'fs'
+          output: { key: '<%= id %>', store: 'fs' }
         },
         writeMongoCollection: {
           collection: 'vigicrues-sections'
@@ -63,15 +56,6 @@ module.exports = {
           id: 'fs',
           options: {
             path: __dirname
-          }
-        }, {
-          id: 's3',
-          options: {
-            client: {
-              accessKeyId: process.env.S3_ACCESS_KEY,
-              secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-            },
-            bucket: process.env.S3_BUCKET
           }
         }],
         connectMongo: {
@@ -93,7 +77,7 @@ module.exports = {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
-        removeStores: ['memory', 'fs', 's3']
+        removeStores: ['memory', 'fs']
       }
     }
   }

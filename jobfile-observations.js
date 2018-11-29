@@ -3,21 +3,23 @@ const hooks = krawler.hooks
 const _ = require('lodash')
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
-const stations = require('./vigicrues/stations.json').features
+
+let stations = null
 
 // Create a custom hook to generate tasks
 let generateTasks = (options) => {
   return (hook) => {
     let tasks = []
+    stations = hook.data.stations
     stations.forEach(station => {
       options.series.forEach(serie => {
         let task = {
           id: station.properties.CdStationH + '-' + serie,
+          initialTime: options.initialTime,
+          CdStationH: station.properties.CdStationH,
+          serie: serie,
           options: {
             url: options.baseUrl + 'CdStationHydro=' + station.properties.CdStationH + '&GrdSerie=' + serie + '&FormatSortie=simple&FormatDate=iso',
-            station: station.properties.CdStationH,
-            serie: serie,
-            lastTime: options.lastTime
           }
         }
         tasks.push(task)
@@ -42,6 +44,16 @@ module.exports = {
   },
   hooks: {
     tasks: {
+      before: {
+        readMongoCollection: {
+          collection: 'vigicrues-observations',
+          dataPath: 'data.recentDataTime',
+          // find({'properties.CdStationH':'A455000201'}).sort({time: -1}).limit(1)
+          query: { 'properties.CdStationH': '<%= CdStationH %>', 'properties.<%= serie %>': { $exists: true } },
+          sort: { time: -1 },
+          limit: 1
+        }
+      },
       after: {
         readJson: {},
         writeJsonMemory: {
@@ -52,18 +64,30 @@ module.exports = {
         apply: {
           function: (item) => {
             let features = []
+            let lastTime = item.initialTime
+            if (item.recentDataTime.length === 1) {
+              lastTime = item.recentDataTime[0]
+            }
             // Must check wether the task query has succeeded or not
             if (!_.isNil(item.data.Serie)) {
               stationId = item.data.Serie.CdStationHydro
               // Ensure we have a station              
-              let stationObject = _.find(stations, (station) => { return station.properties.CdStationH === item.options.station })
+              let stationObject = _.find(stations, (station) => { return station.properties.CdStationH === item.CdStationH })
               if (!_.isNil(stationObject)) {
                 _.forEach(item.data.Serie.ObssHydro, (obs) => {
                   let timeObsUTC= new Date(obs[0]).getTime()
-                  if (timeObsUTC > item.options.lastTime) {
+                  if (timeObsUTC > lastTime) {
                     let feature = Object.assign({}, stationObject)
+                    // Remove unused properties
+                    delete feature._id
+                    delete feature.CoordXStat
+                    delete feature.CoordYStat
+                    delete feature.ProjCoord
+                    delete feature.CdAncienRef
+                    // Add new properties
                     feature['time'] = new Date(timeObsUTC).toISOString()
-                    feature.properties[item.options.serie] = obs[1]
+                    feature.properties[item.serie] = obs[1]
+                    // Push the feature
                     features.push(feature)
                   }
                 })
@@ -79,7 +103,7 @@ module.exports = {
           }
         },
         writeMongoCollection: {
-          chunkSize: 512,
+          chunkSize: 256,
           collection: 'vigicrues-observations',
           transform: { unitMapping: { time: { asDate: 'utc' } } }
         },
@@ -110,10 +134,15 @@ module.exports = {
             { geometry: '2dsphere' }
           ],
         },
+        readMongoCollection: {
+          clientPath: 'taskTemplate.client',
+          collection: 'vigicrues-stations',
+          dataPath: 'data.stations'
+        },
         generateTasks: {
           baseUrl: 'https://www.vigicrues.gouv.fr/services/observations.json?',
           series:  ["H", "Q"],
-          lastTime: Date.now() - 1800000 // 30 minutes
+          initialTime: Date.now() - 6048000 // 7 days
         }
       },
       after: {
