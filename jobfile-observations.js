@@ -48,7 +48,6 @@ module.exports = {
         readMongoCollection: {
           collection: 'vigicrues-observations',
           dataPath: 'data.recentDataTime',
-          // find({'properties.CdStationH':'A455000201'}).sort({time: -1}).limit(1)
           query: { 'properties.CdStationH': '<%= CdStationH %>', 'properties.<%= serie %>': { $exists: true } },
           sort: { time: -1 },
           limit: 1
@@ -66,7 +65,7 @@ module.exports = {
             let features = []
             let lastTime = item.initialTime
             if (item.recentDataTime.length === 1) {
-              lastTime = item.recentDataTime[0]
+              lastTime = item.recentDataTime[0].time.getTime()
             }
             // Must check wether the task query has succeeded or not
             if (!_.isNil(item.data.Serie)) {
@@ -142,7 +141,7 @@ module.exports = {
         generateTasks: {
           baseUrl: 'https://www.vigicrues.gouv.fr/services/observations.json?',
           series:  ["H", "Q"],
-          initialTime: Date.now() - 6048000 // 7 days
+          initialTime: Date.now() - 604800000 // 7 days
         }
       },
       after: {
