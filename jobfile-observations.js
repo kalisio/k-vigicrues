@@ -63,26 +63,22 @@ module.exports = {
         apply: {
           function: (item) => {
             let features = []
-            let lastTime = item.initialTime
-            if (item.recentDataTime.length === 1) {
-              lastTime = item.recentDataTime[0].time.getTime()
-            }
-            // Must check wether the task query has succeeded or not
+            let fieldsToOmit = ['_id', 'properties.CoordXStat', 'properties.CoordYStat', 'properties.ProjCoord', 'properties.CdAncienRef']
+            // Check wether the task query has succeeded or not
             if (!_.isNil(item.data.Serie)) {
               stationId = item.data.Serie.CdStationHydro
               // Ensure we have a station              
               let stationObject = _.find(stations, (station) => { return station.properties.CdStationH === item.CdStationH })
               if (!_.isNil(stationObject)) {
+                // Compute the time threshold
+                let lastTime = item.initialTime
+                if (item.recentDataTime.length === 1) {
+                  lastTime = item.recentDataTime[0].time.getTime()
+                }
                 _.forEach(item.data.Serie.ObssHydro, (obs) => {
                   let timeObsUTC= new Date(obs[0]).getTime()
                   if (timeObsUTC > lastTime) {
-                    let feature = Object.assign({}, stationObject)
-                    // Remove unused properties
-                    delete feature._id
-                    delete feature.CoordXStat
-                    delete feature.CoordYStat
-                    delete feature.ProjCoord
-                    delete feature.CdAncienRef
+                    let feature = _.cloneDeep(_.omit(stationObject, fieldsToOmit))
                     // Add new properties
                     feature['time'] = new Date(timeObsUTC).toISOString()
                     feature.properties[item.serie] = obs[1]
@@ -128,7 +124,7 @@ module.exports = {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-observations',
           indices: [ 
-            [{ time: 1 }, { expireAfterSeconds: 604800 }], // 7 days
+            [{ time: 1 }, { expireAfterSeconds: (7 * 24 * 60 * 60) }], // days in s
             { 'properties.CdStationH': 1 }, 
             { geometry: '2dsphere' }
           ],
@@ -141,7 +137,7 @@ module.exports = {
         generateTasks: {
           baseUrl: 'https://www.vigicrues.gouv.fr/services/observations.json?',
           series:  ["H", "Q"],
-          initialTime: Date.now() - 604800000 // 7 days
+          initialTime: Date.now() - (7 * 24 * 60 * 60 * 1000)  // days in ms
         }
       },
       after: {
