@@ -14,12 +14,12 @@ let generateTasks = (options) => {
     stations.forEach(station => {
       options.series.forEach(serie => {
         let task = {
-          id: station.properties.CdStationH + '-' + serie,
+          id: station.properties.CdStationHydro + '-' + serie,
           initialTime: options.initialTime,
-          CdStationH: station.properties.CdStationH,
+          CdStationHydro: station.properties.CdStationHydro,
           serie: serie,
           options: {
-            url: options.baseUrl + 'CdStationHydro=' + station.properties.CdStationH + '&GrdSerie=' + serie + '&FormatSortie=simple&FormatDate=iso',
+            url: options.baseUrl + 'CdStationHydro=' + station.properties.CdStationHydro + '&GrdSerie=' + serie + '&FormatSortie=simple&FormatDate=iso',
           }
         }
         tasks.push(task)
@@ -48,7 +48,7 @@ module.exports = {
         readMongoCollection: {
           collection: 'vigicrues-observations',
           dataPath: 'data.recentDataTime',
-          query: { 'properties.CdStationH': '<%= CdStationH %>', 'properties.<%= serie %>': { $exists: true } },
+          query: { 'properties.CdStationHydro': '<%= CdStationHydro %>', 'properties.<%= serie %>': { $exists: true } },
           sort: { time: -1 },
           limit: 1
         }
@@ -63,12 +63,12 @@ module.exports = {
         apply: {
           function: (item) => {
             let features = []
-            let fieldsToOmit = ['_id', 'properties.CoordXStat', 'properties.CoordYStat', 'properties.ProjCoord', 'properties.CdAncienRef']
+            let fieldsToOmit = ['_id', 'properties.CoordXStationHydro', 'properties.CoordYStationHydro', 'properties.ProjCoordStationHydro', 'properties.CdStationHydroAncienRef']
             // Check wether the task query has succeeded or not
             if (!_.isNil(item.data.Serie)) {
               stationId = item.data.Serie.CdStationHydro
               // Ensure we have a station              
-              let stationObject = _.find(stations, (station) => { return station.properties.CdStationH === item.CdStationH })
+              let stationObject = _.find(stations, (station) => { return station.properties.CdStationHydro === item.CdStationHydro })
               if (!_.isNil(stationObject)) {
                 // Compute the time threshold
                 let lastTime = item.initialTime
@@ -125,7 +125,7 @@ module.exports = {
           collection: 'vigicrues-observations',
           indices: [ 
             [{ time: 1 }, { expireAfterSeconds: (7 * 24 * 60 * 60) }], // days in s
-            { 'properties.CdStationH': 1 }, 
+            { 'properties.CdStationHydro': 1 }, 
             { geometry: '2dsphere' }
           ],
         },
