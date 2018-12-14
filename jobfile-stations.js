@@ -35,11 +35,11 @@ module.exports = {
           hook: 'writeJson',
           key: '<%= id %>',
           store: 'memory'
-        },
+        }/*,
         gzipToStore: {
           input: { key: '<%= id %>', store: 'memory' },
           output: { key: '<%= id %>', store: 'fs' }
-        },
+        }*/,
         deleteMongoCollection: {
           collection: 'vigicrues-stations'
         },
@@ -68,7 +68,7 @@ module.exports = {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-stations',
           indices: [
-            { CdStationH: 1 }, 
+            { CdStationHydro: 1 }, 
             { geometry: '2dsphere' }
           ]
         }
