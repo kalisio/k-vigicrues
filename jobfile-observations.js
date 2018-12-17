@@ -36,7 +36,8 @@ module.exports = {
   store: 'memory',
   options: {
     workersLimit: 4,
-    faultTolerant: true
+    faultTolerant: true,
+    timeout: 10 * 60 * 1000
   },
   taskTemplate: {
     id: 'vigicrues/observations/<%= taskId %>',
