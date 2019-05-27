@@ -1,5 +1,7 @@
 # k-vigicrues
 
+[![Build Status](https://travis-ci.org/kalisio/k-vigicrues.png?branch=master)](https://travis-ci.org/kalisio/k-vigicrues)
+
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French flood warning system [Vigicrues](https://www.vigicrues.gouv.fr/)
 
 ## Getting started
