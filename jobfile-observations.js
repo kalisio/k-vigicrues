@@ -127,7 +127,8 @@ module.exports = {
           indices: [ 
             [{ time: 1 }, { expireAfterSeconds: (7 * 24 * 60 * 60) }], // days in s
             { 'properties.CdStationHydro': 1 },
-            [{ 'properties.CdStationHydro': 1, time: -1 }, { background: true }],
+            [{ 'properties.CdStationHydro': 1, 'properties.H': 1, time: -1 }, { background: true }],
+            [{ 'properties.CdStationHydro': 1, 'properties.Q': 1, time: -1 }, { background: true }],
             { 'properties.Q': 1 },
             { 'properties.H': 1 },
             { geometry: '2dsphere' }
