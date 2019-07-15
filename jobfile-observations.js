@@ -2,6 +2,8 @@ const krawler = require('@kalisio/krawler')
 const hooks = krawler.hooks
 const _ = require('lodash')
 
+const config = require('./config')
+
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
 
 let stations = null
@@ -64,7 +66,13 @@ module.exports = {
         apply: {
           function: (item) => {
             let features = []
-            let fieldsToOmit = ['_id', 'properties.CoordXStationHydro', 'properties.CoordYStationHydro', 'properties.ProjCoordStationHydro', 'properties.CdStationHydroAncienRef']
+            let fieldsToOmit = [
+              '_id', 
+              'properties.CoordXStationHydro', 
+              'properties.CoordYStationHydro', 
+              'properties.ProjCoordStationHydro', 
+              'properties.CdStationHydroAncienRef'
+            ]
             // Check wether the task query has succeeded or not
             if (!_.isNil(item.data.Serie)) {
               stationId = item.data.Serie.CdStationHydro
@@ -125,7 +133,7 @@ module.exports = {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-observations',
           indices: [ 
-            [{ time: 1 }, { expireAfterSeconds: (7 * 24 * 60 * 60) }], // days in s
+            [{ time: 1 }, { expireAfterSeconds: config.expirationPeriod }], // days in s
             { 'properties.CdStationHydro': 1 },
             [{ 'properties.CdStationHydro': 1, time: -1 }, { background: true }],
             [{ 'properties.CdStationHydro': 1, 'properties.H': 1, time: -1 }, { background: true }],
