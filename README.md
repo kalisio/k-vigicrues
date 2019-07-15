@@ -28,7 +28,7 @@ This project is sponsored by
 
 ## License
 
-This project is licensed under the MIT License - see the [license file](./LICENCE.md) for details
+This project is licensed under the MIT License - see the [license file](./LICENCE) for details
 
 
 
