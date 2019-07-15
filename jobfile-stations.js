@@ -5,7 +5,7 @@ module.exports = {
   store: 'fs',
   options: {
     workersLimit: 1,
-    faultTolerant: false
+    faultTolerant: true,
   },
   tasks: [{
     id: 'vigicrues/stations',
@@ -29,6 +29,8 @@ module.exports = {
         },
         transformJson: {
           transformPath: 'features',
+		      mapping: { 'properties.LbStationHydro': 'properties.name' },
+		      omit: [ 'properties.CoordXStationHydro', 'properties.CoordYStationHydro', 'properties.ProjCoordStationHydro', 'properties.CdStationHydroAncienRef'],
           filter: { 'properties.LbAffichageStationHydro': { $regex: '^Vigicrues' } }
         },
         writeJsonMemory: {
