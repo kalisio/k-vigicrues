@@ -66,13 +66,6 @@ module.exports = {
         apply: {
           function: (item) => {
             let features = []
-            let fieldsToOmit = [
-              '_id', 
-              'properties.CoordXStationHydro', 
-              'properties.CoordYStationHydro', 
-              'properties.ProjCoordStationHydro', 
-              'properties.CdStationHydroAncienRef'
-            ]
             // Check wether the task query has succeeded or not
             if (!_.isNil(item.data.Serie)) {
               stationId = item.data.Serie.CdStationHydro
@@ -87,12 +80,17 @@ module.exports = {
                 _.forEach(item.data.Serie.ObssHydro, (obs) => {
                   let timeObsUTC= new Date(obs[0]).getTime()
                   if (timeObsUTC > lastTime) {
-                    let feature = _.cloneDeep(_.omit(stationObject, fieldsToOmit))
-                    // Add new properties
-                    feature['time'] = new Date(timeObsUTC).toISOString()
-                    feature.properties[item.serie] = obs[1]
+                    let observation_feature = { 		  
+                      type: 'Feature',
+                      time: new Date(timeObsUTC).toISOString(),
+                      geometry: stationObject.geometry,
+                      properties: {
+                        CdStationHydro: stationObject.properties.CdStationHydro,
+                        [item.serie]: obs[1]
+                      }
+                    }
                     // Push the feature
-                    features.push(feature)
+                    features.push(observation_feature)
                   }
                 })
               }
