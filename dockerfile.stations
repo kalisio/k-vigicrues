@@ -7,6 +7,8 @@ ENV KRAWLER_BRANCH=$KRAWLER_BRANCH
 
 RUN git clone https://github.com/kalisio/krawler.git -b $KRAWLER_BRANCH --single-branch && cd krawler && yarn install && cd ..
 
+# Install Vigicrues
+COPY config.js .
 COPY jobfile-stations.js .
 
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node ./krawler/healthcheck.js
