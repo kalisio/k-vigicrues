@@ -85,7 +85,7 @@ module.exports = {
                       time: new Date(timeObsUTC).toISOString(),
                       geometry: stationObject.geometry,
                       properties: {
-                        name: stationObject.properties.LbStationHydro,
+                        name: stationObject.properties.name,
                         CdStationHydro: stationObject.properties.CdStationHydro,
                         [item.serie]: obs[1]
                       }
