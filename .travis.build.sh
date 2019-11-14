@@ -1,20 +1,12 @@
 #!/bin/bash
+
+# Source the environment to define Krawler and image versions
 source .travis.env.sh
+echo Building $IMAGE_NAME:$IMAGE_TAG with Krawler-$KRAWLER_TAG
 
-echo Building k-vigicrues $VERSION with Krawler $KRAWLER_BRANCH
+# Build the image
+docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile -t $IMAGE_NAME:$IMAGE_TAG .
 
-# Build Stations image
-docker build --build-arg KRAWLER_BRANCH=$KRAWLER_BRANCH -f dockerfile.stations -t kalisio/k-vigicrues-stations .
-docker tag kalisio/k-vigicrues-stations kalisio/k-vigicrues:stations-$VERSION
-# Build Sections image
-docker build --build-arg KRAWLER_BRANCH=$KRAWLER_BRANCH -f dockerfile.sections -t kalisio/k-vigicrues-sections .
-docker tag kalisio/k-vigicrues-sections kalisio/k-vigicrues:sections-$VERSION
-# Build Observations image
-docker build --build-arg KRAWLER_BRANCH=$KRAWLER_BRANCH -f dockerfile.observations -t kalisio/k-vigicrues-observations .
-docker tag kalisio/k-vigicrues-observations kalisio/k-vigicrues:observations-$VERSION
-
-# Push the built images to Docker hub
+# Publish the image
 docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
-docker push kalisio/k-vigicrues:stations-$VERSION
-docker push kalisio/k-vigicrues:sections-$VERSION
-docker push kalisio/k-vigicrues:observations-$VERSION
+docker push $IMAGE_NAME:$IMAGE_TAG
