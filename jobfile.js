@@ -3,7 +3,7 @@ const config = require('./config')
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
 
 module.exports = {
-  id: 'vigicrues-sections',
+  id: 'vigicrues',
   store: 'memory',
   options: {
     workersLimit: 1,
@@ -45,7 +45,7 @@ module.exports = {
           output: { key: '<%= id %>', store: 'fs' }
         },
         writeMongoCollection: {
-          collection: 'vigicrues-sections'
+          collection: 'vigicrues'
         },
         clearData: {}
       }
@@ -67,11 +67,11 @@ module.exports = {
         },
         dropMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'vigicrues-sections'
+          collection: 'vigicrues'
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'vigicrues-sections',
+          collection: 'vigicrues',
           indices: [{ gid: 1 }]
         }
       },
