@@ -34,16 +34,6 @@ module.exports = {
           // Simplespec style
           mapping: { 'properties.NivSituVigiCruEnt': { path: 'properties.stroke', values: { 1: config.sectionsColors[0], 2: config.sectionsColors[1], 3: config.sectionsColors[2], 4: config.sectionsColors[3] }, delete: false } }
         },   
-        /* To debug */
-        writeJsonMemory: {
-          hook: 'writeJson',
-          key: '<%= id %>',
-          store: 'memory'
-        },
-        gzipToStore: {
-          input: { key: '<%= id %>', store: 'memory' },
-          output: { key: '<%= id %>', store: 'fs' }
-        },
         writeMongoCollection: {
           collection: 'vigicrues'
         },
@@ -52,14 +42,7 @@ module.exports = {
     },
     jobs: {
       before: {
-        createStores: [{
-          id: 'memory'
-        }, {
-          id: 'fs',
-          options: {
-            path: __dirname
-          }
-        }],
+        createStores: [{ id: 'memory' }],
         connectMongo: {
           url: dbUrl,
           // Required so that client is forwarded from job to tasks
@@ -79,7 +62,7 @@ module.exports = {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
-        removeStores: ['memory', 'fs']
+        removeStores: ['memory']
       }
     }
   }
