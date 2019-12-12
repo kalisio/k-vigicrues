@@ -4,21 +4,28 @@
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French flood warning system [Vigicrues](https://www.vigicrues.gouv.fr/)
 
-## Getting started
+## Description
 
+The **k-vigicrues** job allow to flood alerts from the following url: `https://www.vigicrues.gouv.fr/services/vigicrues.geojson`.
+
+The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) collection named `vigicrues`
+
+By default, the job is executed every 15 minutes.
+
+## Configuration
+
+| Variable | Description |
+|--- | --- |
+| `DB_URL` | The mongoDB database URL. The default value is `mongodb://127.0.0.1:27017/vigicrues` |
+| `DEBUG` | Enables debug output. Set it to `krawler*` to enable full output. By default it is undefined. |
 
 ## Deployment
 
-- DOCKER_HUB_LOGIN
-- DOCKER_HUB_PASSWORD
+We personally use [Kargo](https://kalisio.github.io/kargo/) to deploy the service.
 
 ## Contributing
 
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](https://semver.org/) for versioning. For the versions available, see the tags on this repository.
+Please refer to [contribution section](./CONTRIBUTING.md) for more details.
 
 ## Authors
 

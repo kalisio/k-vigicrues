@@ -1,6 +1,7 @@
-const config = require('./config')
+
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
+const sectionsColors = [ '#00FF00', '#FFFF00', '#FFBF00', '#FF0000' ]
 
 module.exports = {
   id: 'vigicrues',
@@ -32,7 +33,7 @@ module.exports = {
           // Leaflet style
           //mapping: { 'properties.NivSituVigiCruEnt': { path: 'style.color', values: { 1: 'green', 2: 'yellow', 3: 'orange', 4: 'red' }, delete: false } }
           // Simplespec style
-          mapping: { 'properties.NivSituVigiCruEnt': { path: 'properties.stroke', values: { 1: config.sectionsColors[0], 2: config.sectionsColors[1], 3: config.sectionsColors[2], 4: config.sectionsColors[3] }, delete: false } }
+          mapping: { 'properties.NivSituVigiCruEnt': { path: 'properties.stroke', values: { 1: sectionsColors[0], 2: sectionsColors[1], 3: sectionsColors[2], 4: sectionsColors[3] }, delete: false } }
         },   
         writeMongoCollection: {
           collection: 'vigicrues'
