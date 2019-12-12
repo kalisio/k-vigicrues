@@ -1,14 +1,15 @@
 # k-vigicrues
 
+[![Latest Release](https://img.shields.io/github/v/tag/kalisio/k-vigicrues?sort=semver&label=latest)](https://github.com/kalisio/k-vigcrues/releases)
 [![Build Status](https://travis-ci.org/kalisio/k-vigicrues.png?branch=master)](https://travis-ci.org/kalisio/k-vigicrues)
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French flood warning system [Vigicrues](https://www.vigicrues.gouv.fr/)
 
 ## Description
 
-The **k-vigicrues** job allow to flood alerts from the following url: `https://www.vigicrues.gouv.fr/services/vigicrues.geojson`.
+The **k-vigicrues** job allow to scrape flood alerts from the following url: [https://www.vigicrues.gouv.fr/services/vigicrues.geojson](https://www.vigicrues.gouv.fr/services/vigicrues.geojson). The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) database and more precisely in the collection `vigicrues`.
 
-The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) collection named `vigicrues`
+All records are stored in [GeoJson](https://fr.wikipedia.org/wiki/GeoJSON) format.
 
 By default, the job is executed every 15 minutes.
 
