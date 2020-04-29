@@ -1,3 +1,9 @@
+### 1.1.0 (2020-04-29)
+
+##### New Features
+
+*  Upgrade to Node 12 (close [#24](https://github.com/kalisio/k-vigicrues/pull/24)) ([85fdc361](https://github.com/kalisio/k-vigicrues/commit/85fdc36152e0ab9cef5406e3178b90491c1865dd))
+
 ## 1.0.0 (2019-12-12)
 
 ##### New Features
