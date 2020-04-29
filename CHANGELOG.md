@@ -23,17 +23,6 @@
 *  containers build ([4d270fc1](https://github.com/kalisio/k-vigicrues/commit/4d270fc1d8756b203667d7a964fe3c9db29782f8))
 *  Scanned Objects / Returned has gone above 1000 (closed [#12](https://github.com/kalisio/k-vigicrues/pull/12)) ([563f6aec](https://github.com/kalisio/k-vigicrues/commit/563f6aecca6a42ea6645ee90073b15e36f6078d1))
 
-##### Other Changes
-
-*  Archive the data [#23](https://github.com/kalisio/k-vigicrues/pull/23) ([f69319dd](https://github.com/kalisio/k-vigicrues/commit/f69319dd458b168d83be1205d848340162db2179))
-* //github.com/kalisio/k-vigicrues ([2ff16d6c](https://github.com/kalisio/k-vigicrues/commit/2ff16d6c4256e79ff02cbe04ddf7469b6e5ffc50))
-*  Decrease image size using multistage building [#19](https://github.com/kalisio/k-vigicrues/pull/19) ([35b0149c](https://github.com/kalisio/k-vigicrues/commit/35b0149c3c32c8c09223519cb00d08a5446a57ca))
-*  reduce vigicrues-observations IO utilization ([#11](https://github.com/kalisio/k-vigicrues/pull/11)) ([774ffd11](https://github.com/kalisio/k-vigicrues/commit/774ffd1175b4474f38e1ebfc1dc267d97a06d9b6))
-*  [#10](https://github.com/kalisio/k-vigicrues/pull/10) ([26a29eab](https://github.com/kalisio/k-vigicrues/commit/26a29eabfd3c0be5b1b753e4478a30ab05e2be0e))
-* //github.com/kalisio/k-vigicrues ([7b330ac2](https://github.com/kalisio/k-vigicrues/commit/7b330ac2eea1e5804e12f381a9c07da0f71f99f1))
-* //github.com/kalisio/k-vigicrues ([de7c243a](https://github.com/kalisio/k-vigicrues/commit/de7c243ab7ae8ac5da044d88c6a44630acbbb6c2))
-* //github.com/kelektiv/node-cron/issues/377) ([cf33dc08](https://github.com/kalisio/k-vigicrues/commit/cf33dc08b05d3b6a8b192bee47bcb151ae1a773f))
-
 #### 0.1.0 (2019-11-15)
 
 ##### New Features
@@ -50,16 +39,3 @@
 *  Observations should handle the name property (closed [#17](https://github.com/kalisio/k-vigicrues/pull/17)) ([eb056219](https://github.com/kalisio/k-vigicrues/commit/eb056219e5e94853eb1cb97254ea87011fe6050d))
 *  containers build ([4d270fc1](https://github.com/kalisio/k-vigicrues/commit/4d270fc1d8756b203667d7a964fe3c9db29782f8))
 *  Scanned Objects / Returned has gone above 1000 (closed [#12](https://github.com/kalisio/k-vigicrues/pull/12)) ([563f6aec](https://github.com/kalisio/k-vigicrues/commit/563f6aecca6a42ea6645ee90073b15e36f6078d1))
-
-##### Other Changes
-
-*  Decrease image size using multistage building [#19](https://github.com/kalisio/k-vigicrues/pull/19) ([35b0149c](https://github.com/kalisio/k-vigicrues/commit/35b0149c3c32c8c09223519cb00d08a5446a57ca))
-*  reduce vigicrues-observations IO utilization ([#11](https://github.com/kalisio/k-vigicrues/pull/11)) ([774ffd11](https://github.com/kalisio/k-vigicrues/commit/774ffd1175b4474f38e1ebfc1dc267d97a06d9b6))
-*  [#10](https://github.com/kalisio/k-vigicrues/pull/10) ([26a29eab](https://github.com/kalisio/k-vigicrues/commit/26a29eabfd3c0be5b1b753e4478a30ab05e2be0e))
-* //github.com/kalisio/k-vigicrues ([7b330ac2](https://github.com/kalisio/k-vigicrues/commit/7b330ac2eea1e5804e12f381a9c07da0f71f99f1))
-* //github.com/kalisio/k-vigicrues ([de7c243a](https://github.com/kalisio/k-vigicrues/commit/de7c243ab7ae8ac5da044d88c6a44630acbbb6c2))
-* //github.com/kelektiv/node-cron/issues/377) ([cf33dc08](https://github.com/kalisio/k-vigicrues/commit/cf33dc08b05d3b6a8b192bee47bcb151ae1a773f))
-
-
-
-
