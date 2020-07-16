@@ -1,7 +1,8 @@
-
+const moment = require('moment')
+const _ = require('lodash')
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
-const sectionsColors = [ '#00FF00', '#FFFF00', '#FFBF00', '#FF0000' ]
+const ttl = +process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
 
 module.exports = {
   id: 'vigicrues',
@@ -11,7 +12,7 @@ module.exports = {
     faultTolerant: true
   },
   tasks: [{
-    id: 'vigicrues/sections',
+    id: 'vigicrues',
     type: 'http',
     options: {
       url: 'https://www.vigicrues.gouv.fr/services/vigicrues.geojson'
@@ -22,21 +23,51 @@ module.exports = {
       after: {
         readJson: {},
         reprojectGeoJson: { from: 'EPSG:2154' },
-        omitCRS: {
-          hook: 'transformJson',
-          omit: ['crs']
+        apply: {
+          // Build the forecast collection using the vigilance value (NivSituVigiCruEnt)
+          // and a simplified geometry of the section. The simplifief geometry (MultiPoint) is 
+          // derived from the original (MultiLineString) using the the mid point of each string.
+          function: (item) => {
+            let forecastFeatures = []
+            _.forEach(item.data.features, feature => {
+              let points = []
+              _.forEach(feature.geometry.coordinates, coords => {
+                points.push(coords[Math.floor(coords.length/2)])
+              })
+              forecastFeatures.push({
+                type: 'Feature',
+                time: moment.utc().toDate(),
+                properties: {
+                  gid: feature.properties.gid,
+                  vigilance: feature.properties.NivSituVigiCruEnt
+                },
+                geometry: {
+                  type: 'MultiPoint',
+                  coordinates: points
+                }
+              })
+            })
+            item.data.forecastFeatures = forecastFeatures
+          }
         },
-        applyStyle: {
-          hook: 'transformJson',
-          transformPath: 'features',
-          filter: { 'properties.NivSituVigiCruEnt': { $gt: 0 } }, // Filter according to alert level
-          // Leaflet style
-          //mapping: { 'properties.NivSituVigiCruEnt': { path: 'style.color', values: { 1: 'green', 2: 'yellow', 3: 'orange', 4: 'red' }, delete: false } }
-          // Simplespec style
-          mapping: { 'properties.NivSituVigiCruEnt': { path: 'properties.stroke', values: { 1: sectionsColors[0], 2: sectionsColors[1], 3: sectionsColors[2], 4: sectionsColors[3] }, delete: false } }
-        },   
-        writeMongoCollection: {
-          collection: 'vigicrues'
+        writeForecasts: {
+          hook: 'writeMongoCollection',
+          collection: 'vigicrues-forecasts',
+          dataPath: 'result.data.forecastFeatures'
+        },
+        writeSections: {
+          hook: 'updateMongoCollection',
+          collection: 'vigicrues-sections',
+          filter: { 'properties.gid': '<%= properties.gid %>' },
+          upsert : true,
+          transform: {
+            transformPath: 'features',
+            omit: [
+              'id',
+              'properties.NivSituVigiCruEnt'
+            ]
+          },
+          chunkSize: 256
         },
         clearData: {}
       }
@@ -49,17 +80,34 @@ module.exports = {
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
-        dropMongoCollection: {
+        createSectionsCollection: {
+          hook: 'createMongoCollection',
           clientPath: 'taskTemplate.client',
-          collection: 'vigicrues'
+          collection: 'vigicrues-sections',
+          indices: [
+            [{ 'properties.gid': 1 }, { unique: true }],
+            { geometry: '2dsphere' }                                                                                                              
+          ]
         },
-        createMongoCollection: {
+        createForecastsCollection: {
+          hook: 'createMongoCollection',
           clientPath: 'taskTemplate.client',
-          collection: 'vigicrues',
-          indices: [{ gid: 1 }]
+          collection: 'vigicrues-forecasts',
+          indices: [
+            [{ time: 1, 'properties.gid': 1 }, { unique: true }],
+            { 'properties.vigilance': 1 },
+            { 'properties.gid': 1, 'properties.vigilance': 1, time: -1 },
+            [{ time: 1 }, { expireAfterSeconds: ttl }] // days in secs                                                                                                         
+          ]
         }
       },
       after: {
+        disconnectMongo: {
+          clientPath: 'taskTemplate.client'
+        },
+        removeStores: ['memory']
+      },
+      error: {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
