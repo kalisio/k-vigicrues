@@ -11,13 +11,13 @@ The **k-vigicrues** job allow to scrape flood alerts from the following url: [ht
 
 All records are stored in [GeoJson](https://fr.wikipedia.org/wiki/GeoJSON) format.
 
-By default, the job is executed every 15 minutes.
+The job is executed according a specific cron expression. By default every 3 hours.
 
 ## Configuration
 
 | Variable | Description |
 |--- | --- |
-| `DB_URL` | The mongoDB database URL. The default value is `mongodb://127.0.0.1:27017/vigicrues` |
+| `DB_URL` | The mongoDB database URL. The default value is `mongodb://127.0.0.1:27017/vigicrues`. |
 | `DEBUG` | Enables debug output. Set it to `krawler*` to enable full output. By default it is undefined. |
 
 ## Deployment
