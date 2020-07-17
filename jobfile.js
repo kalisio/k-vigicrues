@@ -1,5 +1,6 @@
 const moment = require('moment')
 const _ = require('lodash')
+const turf = require('@turf/turf')
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
 const ttl = +process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
@@ -24,36 +25,20 @@ module.exports = {
         readJson: {},
         reprojectGeoJson: { from: 'EPSG:2154' },
         apply: {
-          // Build the forecast collection using the vigilance value (NivSituVigiCruEnt)
-          // and a simplified geometry of the section. The simplifief geometry (MultiPoint) is 
-          // derived from the original (MultiLineString) using the the mid point of each string.
           function: (item) => {
-            let forecastFeatures = []
+            let features = []
             _.forEach(item.data.features, feature => {
-              let points = []
-              _.forEach(feature.geometry.coordinates, coords => {
-                points.push(coords[Math.floor(coords.length/2)])
-              })
-              forecastFeatures.push({
-                type: 'Feature',
-                time: moment.utc().toDate(),
-                properties: {
-                  gid: feature.properties.gid,
-                  vigilance: feature.properties.NivSituVigiCruEnt
-                },
-                geometry: {
-                  type: 'MultiPoint',
-                  coordinates: points
-                }
-              })
+              let bufferFeature = turf.buffer(turf.simplify(feature, {tolerance: 0.001, highQuality: true}), 0.1)
+              _.set(bufferFeature, 'time', moment.utc().toDate())
+              _.set(bufferFeature, 'properties.name', feature.properties.NomEntVigiCru) // neded for timeseries
+              features.push(bufferFeature)
             })
-            item.data.forecastFeatures = forecastFeatures
+            item.data.features = features
           }
         },
         writeForecasts: {
           hook: 'writeMongoCollection',
-          collection: 'vigicrues-forecasts',
-          dataPath: 'result.data.forecastFeatures'
+          collection: 'vigicrues-forecasts'
         },
         writeSections: {
           hook: 'updateMongoCollection',
@@ -64,6 +49,7 @@ module.exports = {
             transformPath: 'features',
             omit: [
               'id',
+              'time',
               'properties.NivSituVigiCruEnt'
             ]
           },
