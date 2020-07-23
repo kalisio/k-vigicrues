@@ -22,23 +22,24 @@ module.exports = {
   hooks: {
     tasks: {
       after: {
-        readJson: {},
-        reprojectGeoJson: { from: 'EPSG:2154' },
-        apply: {
-          function: (item) => {
-            let features = []
-            _.forEach(item.data.features, feature => {
-              let bufferFeature = turf.buffer(turf.simplify(feature, {tolerance: 0.001, highQuality: true}), 0.1)
-              _.set(bufferFeature, 'time', moment.utc().toDate())
-              _.set(bufferFeature, 'properties.name', feature.properties.NomEntVigiCru) // neded for timeseries
-              features.push(bufferFeature)
-            })
-            item.data.features = features
-          }
+        readJson: {
+          dataPath: 'data.vigicruesResponse'
         },
-        writeForecasts: {
-          hook: 'writeMongoCollection',
-          collection: 'vigicrues-forecasts'
+        reprojectGeoJson: { 
+          dataPath: 'data.vigicruesResponse',
+          from: 'EPSG:2154' 
+        },
+        generateStations: {
+          hook: 'apply',
+          function: (item) => {
+            let sectionFeatures = []
+            _.forEach(item.vigicruesResponse.features, feature => {
+              let sectionFeature = turf.buffer(turf.simplify(feature, {tolerance: 0.001, highQuality: true}), 0.1)
+              _.set(sectionFeature, 'properties.name', feature.properties.NomEntVigiCru) // neded for timeseries
+              sectionFeatures.push(sectionFeature)
+            })
+            item.data = sectionFeatures
+          }
         },
         writeSections: {
           hook: 'updateMongoCollection',
@@ -49,12 +50,37 @@ module.exports = {
             transformPath: 'features',
             omit: [
               'id',
-              'time',
               'properties.NivSituVigiCruEnt'
             ]
           },
           chunkSize: 256
         },
+        generateForecasts: {
+          hook: 'apply',
+          function: (item) => {
+            let forecastFeatures = []
+            _.forEach(item.vigicruesResponse.features, feature => {
+              let forecastFeature = turf.envelope(feature)
+              _.set(forecastFeature, 'time', moment.utc().toDate())
+              _.set(forecastFeature, 'properties.gid', feature.properties.gid) // neded for timeseries
+              _.set(forecastFeature, 'properties.name', feature.properties.NomEntVigiCru) // neded for timeseries
+              _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivSituVigiCruEnt) // neded for timeseries
+              forecastFeatures.push(forecastFeature)
+            })
+            item.data = forecastFeatures
+          }
+        },
+        writeForecasts: {
+          hook: 'writeMongoCollection',
+          collection: 'vigicrues-forecasts',
+          transform: {
+            transformPath: 'features',
+            omit: [
+              'id'
+            ]
+          },
+        },
+        
         clearData: {}
       }
     },
@@ -81,8 +107,8 @@ module.exports = {
           collection: 'vigicrues-forecasts',
           indices: [
             [{ time: 1, 'properties.gid': 1 }, { unique: true }],
-            { 'properties.vigilance': 1 },
-            { 'properties.gid': 1, 'properties.vigilance': 1, time: -1 },
+            { 'properties.NivSituVigiCruEnt': 1 },
+            { 'properties.gid': 1, 'properties.NivSituVigiCruEnt': 1, time: -1 },
             [{ time: 1 }, { expireAfterSeconds: ttl }] // days in secs                                                                                                         
           ]
         }
