@@ -25,7 +25,7 @@ HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/
 
 # Run the job
 ENV NODE_PATH=/opt/krawler/node_modules
-CMD node /opt/krawler --cron "$CRON" jobfile.js
+CMD node /opt/krawler --run --cron "$CRON" jobfile.js
 
 
 
