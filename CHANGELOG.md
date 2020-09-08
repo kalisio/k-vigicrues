@@ -1,3 +1,16 @@
+### 1.2.0 (2020-09-08)
+
+##### New Features
+
+*  Execute the job automatically when the the container is launched (close [#26](https://github.com/kalisio/k-vigicrues/pull/26)) ([5270cedd](https://github.com/kalisio/k-vigicrues/commit/5270ceddabaef3dce744bff77c717894c3211a20))
+*  Archive the data (close [#23](https://github.com/kalisio/k-vigicrues/pull/23)) ([12c8ae7b](https://github.com/kalisio/k-vigicrues/commit/12c8ae7b71673533d5f744c5066b965a48ff90d3))
+
+##### Other Changes
+
+*  Archive the data [#23](https://github.com/kalisio/k-vigicrues/pull/23) ([677c5220](https://github.com/kalisio/k-vigicrues/commit/677c5220e849dfccd43b1ebbf0bc7b4ded2347c6))
+*  Allow to configure the cron expression [#25](https://github.com/kalisio/k-vigicrues/pull/25) ([fc679fd3](https://github.com/kalisio/k-vigicrues/commit/fc679fd32eaf4f5798381ae55cd82352287a3d2f))
+*  Archive the data [#23](https://github.com/kalisio/k-vigicrues/pull/23) ([039e35cd](https://github.com/kalisio/k-vigicrues/commit/039e35cdaa8fc495fed67e5df0c29407a53892d0))
+
 ### 1.1.0 (2020-04-29)
 
 ##### New Features
