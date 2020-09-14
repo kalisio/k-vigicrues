@@ -1,3 +1,10 @@
+#### 1.2.1 (2020-09-14)
+
+##### Other Changes
+
+* //github.com/kalisio/k-vigicrues ([561338ef](https://github.com/kalisio/k-vigicrues/commit/561338ef935a018d374e00c92cb838ce0435dc7c))
+* //github.com/kalisio/k-vigicrues/issues/27 ([acca59d6](https://github.com/kalisio/k-vigicrues/commit/acca59d69b5b560e420e52d027fe9ffbdef86af1))
+
 ### 1.2.0 (2020-09-08)
 
 ##### New Features
