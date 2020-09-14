@@ -47,9 +47,8 @@ module.exports = {
           filter: { 'properties.gid': '<%= properties.gid %>' },
           upsert : true,
           transform: {
-            transformPath: 'features',
             omit: [
-              'id',
+              'properties.NomEntVigiCru',
               'properties.NivSituVigiCruEnt'
             ]
           },
@@ -73,14 +72,7 @@ module.exports = {
         writeForecasts: {
           hook: 'writeMongoCollection',
           collection: 'vigicrues-forecasts',
-          transform: {
-            transformPath: 'features',
-            omit: [
-              'id'
-            ]
-          },
         },
-        
         clearData: {}
       }
     },
