@@ -1,5 +1,9 @@
 ### 1.3.0 (2020-10-01)
 
+##### Other Changes
+
+* Updated release scripts
+
 #### 1.2.1 (2020-09-14)
 
 ##### Other Changes
