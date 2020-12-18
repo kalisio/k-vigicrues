@@ -16,27 +16,32 @@ module.exports = {
     id: 'vigicrues',
     type: 'http',
     options: {
-      url: 'https://www.vigicrues.gouv.fr/services/vigicrues.geojson'
+      url: 'https://www.vigicrues.gouv.fr/services/1/InfoVigiCru.geojson'
     }
   }],
   hooks: {
     tasks: {
       after: {
         readJson: {
-          dataPath: 'data.vigicruesResponse'
         },
         reprojectGeoJson: { 
-          dataPath: 'data.vigicruesResponse',
           from: 'EPSG:2154' 
         },
         generateStations: {
           hook: 'apply',
           function: (item) => {
             let sectionFeatures = []
-            _.forEach(item.vigicruesResponse.features, feature => {
-              let sectionFeature = turf.buffer(turf.simplify(feature, {tolerance: 0.001, highQuality: true}), 0.1)
-              _.set(sectionFeature, 'properties.name', feature.properties.NomEntVigiCru) // neded for timeseries
-              sectionFeatures.push(sectionFeature)
+            let features = _.get(item, 'data.features', [])
+            _.forEach(features, feature => {
+              // FIXME: simplification seems to fail on multilinestring
+              if (feature.geometry.type === 'LineString') {
+                const simplifiedFeature = turf.simplify(feature, {tolerance: 0.001, highQuality: true})
+                let sectionFeature = turf.buffer(simplifiedFeature, 0.1)
+                _.set(sectionFeature, 'properties.name', feature.properties.LbEntCru) // neded for timeseries
+                sectionFeatures.push(sectionFeature)
+              } else {
+                console.log('Skipping multiline geometry for ', feature.properties.LbEntCru)
+              }
             })
             item.data = sectionFeatures
           }
@@ -48,9 +53,10 @@ module.exports = {
           upsert : true,
           transform: {
             omit: [
-              'properties.NomEntVigiCru',
-              'properties.NivSituVigiCruEnt'
-            ]
+              'properties.LbEntCru',
+              'properties.NivInfViCr'
+            ],
+            inPlace: false
           },
           chunkSize: 256
         },
@@ -58,12 +64,12 @@ module.exports = {
           hook: 'apply',
           function: (item) => {
             let forecastFeatures = []
-            _.forEach(item.vigicruesResponse.features, feature => {
+            _.forEach(item.data, feature => {
               let forecastFeature = turf.envelope(feature)
               _.set(forecastFeature, 'time', moment.utc().toDate())
               _.set(forecastFeature, 'properties.gid', feature.properties.gid) // neded for timeseries
-              _.set(forecastFeature, 'properties.name', feature.properties.NomEntVigiCru) // neded for timeseries
-              _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivSituVigiCruEnt) // neded for timeseries
+              _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // neded for timeseries
+              _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // neded for timeseries
               forecastFeatures.push(forecastFeature)
             })
             item.data = forecastFeatures
