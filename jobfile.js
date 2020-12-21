@@ -24,26 +24,35 @@ module.exports = {
       after: {
         readJson: {
         },
-        reprojectGeoJson: { 
-          from: 'EPSG:2154' 
-        },
         generateStations: {
           hook: 'apply',
           function: (item) => {
-            let sectionFeatures = []
-            let features = _.get(item, 'data.features', [])
+            const features = _.get(item, 'data.features', [])
             _.forEach(features, feature => {
-              // FIXME: simplification seems to fail on multilinestring
-              if (feature.geometry.type === 'LineString') {
-                const simplifiedFeature = turf.simplify(feature, {tolerance: 0.001, highQuality: true})
-                let sectionFeature = turf.buffer(simplifiedFeature, 0.1)
-                _.set(sectionFeature, 'properties.name', feature.properties.LbEntCru) // neded for timeseries
-                sectionFeatures.push(sectionFeature)
+              // Ensure clean geometry as some multilinestrings have degenerated lines
+              let nbInvalidGeometries = 0
+              if (turf.getType(feature) === 'MultiLineString') {
+                let lines = []
+                turf.featureEach(turf.flatten(feature), line => {
+                  try {
+                    turf.cleanCoords(line, { mutate: true })
+                    lines.push(turf.getCoords(line))
+                  } catch (error) {
+                    nbInvalidGeometries++
+                  }
+                })
+                if (nbInvalidGeometries > 0) console.error(`Filtering ${nbInvalidGeometries} invalid line(s) on ${feature.properties.LbEntCru}`)
+                // Rebuild geometry from the clean line
+                feature.geometry = turf.multiLineString(lines).geometry
               } else {
-                console.log('Skipping multiline geometry for ', feature.properties.LbEntCru)
+                turf.cleanCoords(feature, { mutate: true })
               }
+              // Convert ID to numeric value
+              _.set(feature, 'properties.gid', _.toNumber(feature.properties.gid))
+              // Remove unused ID
+              _.unset(feature, 'id')
+              _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
             })
-            item.data = sectionFeatures
           }
         },
         writeSections: {
@@ -64,12 +73,13 @@ module.exports = {
           hook: 'apply',
           function: (item) => {
             let forecastFeatures = []
-            _.forEach(item.data, feature => {
+            const features = _.get(item, 'data.features', [])
+            _.forEach(features, feature => {
               let forecastFeature = turf.envelope(feature)
               _.set(forecastFeature, 'time', moment.utc().toDate())
-              _.set(forecastFeature, 'properties.gid', feature.properties.gid) // neded for timeseries
-              _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // neded for timeseries
-              _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // neded for timeseries
+              _.set(forecastFeature, 'properties.gid', feature.properties.gid) // needed for timeseries
+              _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
+              _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // needed for timeseries
               forecastFeatures.push(forecastFeature)
             })
             item.data = forecastFeatures
