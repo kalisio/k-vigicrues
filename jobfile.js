@@ -1,6 +1,9 @@
 const moment = require('moment')
 const _ = require('lodash')
 const turf = require('@turf/turf')
+const makeDebug = require('debug')
+
+const debug = makeDebug('k-vigicrues')
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
 const ttl = +process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
@@ -41,7 +44,7 @@ module.exports = {
                     nbInvalidGeometries++
                   }
                 })
-                if (nbInvalidGeometries > 0) console.error(`Filtering ${nbInvalidGeometries} invalid line(s) on ${feature.properties.LbEntCru}`)
+                if (nbInvalidGeometries > 0) debug(`Filtering ${nbInvalidGeometries} invalid line(s) on ${feature.properties.LbEntCru}`)
                 // Rebuild geometry from the clean line
                 feature.geometry = turf.multiLineString(lines).geometry
               } else {
