@@ -1,3 +1,14 @@
+### 1.4.0 (2020-12-22)
+
+##### Other Changes
+
+* //github.com/kalisio/k-vigicrues/issues/29 (add missing properties for sections/forecasts to make kano tooltip work as expected) ([c4dfe98e](https://github.com/kalisio/k-vigicrues/commit/c4dfe98e5d1a4d8486507033b50322d131407f10))
+* //github.com/kalisio/k-vigicrues/issues/29 (filter properties for sections) ([722c47a2](https://github.com/kalisio/k-vigicrues/commit/722c47a2fabb8382cb69cc9f6fc8d28f981b2415))
+* //github.com/kalisio/k-vigicrues/issues/29 ([bcf2dff5](https://github.com/kalisio/k-vigicrues/commit/bcf2dff5cc5298c850242e57ebe3741f9def8866))
+* //github.com/kalisio/k-vigicrues/issues/28 ([84a7f77e](https://github.com/kalisio/k-vigicrues/commit/84a7f77e5f40463a6600bba8820701b47737221b))
+* //github.com/kalisio/k-vigicrues/issues/29 ([29b609a8](https://github.com/kalisio/k-vigicrues/commit/29b609a886c2d6856f968afa96b41435c1af8ecd))
+*  updated badge url ([4bfcd4a4](https://github.com/kalisio/k-vigicrues/commit/4bfcd4a421ac082f064a1bb0724cc7f9de5a271b))
+
 ### 1.3.0 (2020-10-01)
 
 ##### Other Changes
