@@ -55,6 +55,7 @@ module.exports = {
               // Remove unused ID
               _.unset(feature, 'id')
               _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
+              _.set(feature, 'properties.NomEntVigiCru', feature.properties.LbEntCru) // backward compatibility
             })
           }
         },
@@ -69,6 +70,7 @@ module.exports = {
               'geometry',
               'properties.gid',
               'properties.name',
+              'properties.NomEntVigiCru',
               'properties.CdEntCru',
               'properties.CdTCC'
             ],
@@ -87,6 +89,7 @@ module.exports = {
               _.set(forecastFeature, 'properties.gid', feature.properties.gid) // needed for timeseries
               _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
               _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // needed for timeseries
+              _.set(forecastFeature, 'properties.NomEntVigiCru', feature.properties.LbEntCru) // backward compatibility
               forecastFeatures.push(forecastFeature)
             })
             item.data = forecastFeatures
