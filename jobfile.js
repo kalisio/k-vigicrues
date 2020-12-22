@@ -64,9 +64,13 @@ module.exports = {
           filter: { 'properties.gid': '<%= properties.gid %>' },
           upsert : true,
           transform: {
-            omit: [
-              'properties.LbEntCru',
-              'properties.NivInfViCr'
+            pick: [
+              'type',
+              'geometry',
+              'properties.gid',
+              'properties.name',
+              'properties.CdEntCru',
+              'properties.CdTCC'
             ],
             inPlace: false
           },
