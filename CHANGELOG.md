@@ -1,5 +1,10 @@
 ### 1.4.0 (2020-12-22)
 
+##### New Features
+
+ * Handle the new version of the API (close [#29](https://github.com/kalisio/k-vigicrues/pull/29))
+ * Allow to configure the returned geometry (close [#28](https://github.com/kalisio/k-vigicrues/pull/28))
+
 ##### Other Changes
 
 * //github.com/kalisio/k-vigicrues/issues/29 (add missing properties for sections/forecasts to make kano tooltip work as expected) ([c4dfe98e](https://github.com/kalisio/k-vigicrues/commit/c4dfe98e5d1a4d8486507033b50322d131407f10))
