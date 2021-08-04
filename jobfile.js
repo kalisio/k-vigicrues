@@ -31,24 +31,31 @@ module.exports = {
           hook: 'apply',
           function: (item) => {
             const features = _.get(item, 'data.features', [])
+            let validFeatures = []
             _.forEach(features, feature => {
-              // Ensure clean geometry as some multilinestrings have degenerated lines
-              let nbInvalidGeometries = 0
+              // Ensure clean geometry as some line strings have degenerated lines
               if (turf.getType(feature) === 'MultiLineString') {
-                let lines = []
+                let validLines = []
+                let nbInvalidGeometries = 0
                 turf.featureEach(turf.flatten(feature), line => {
                   try {
                     turf.cleanCoords(line, { mutate: true })
-                    lines.push(turf.getCoords(line))
+                    validLines.push(turf.getCoords(line))
                   } catch (error) {
                     nbInvalidGeometries++
                   }
                 })
-                if (nbInvalidGeometries > 0) debug(`Filtering ${nbInvalidGeometries} invalid line(s) on ${feature.properties.LbEntCru}`)
+                if (nbInvalidGeometries > 0) debug(`Filtering ${nbInvalidGeometries} invalid line(s) for ${feature.properties.LbEntCru}`)
                 // Rebuild geometry from the clean line
-                feature.geometry = turf.multiLineString(lines).geometry
-              } else {
-                turf.cleanCoords(feature, { mutate: true })
+                feature.geometry = turf.multiLineString(validLines).geometry
+                validFeatures.push(feature)
+              } else if (turf.getType(feature) === 'LineString')  {
+                try {
+                  turf.cleanCoords(feature, { mutate: true })
+                  validFeatures.push(feature)
+                } catch (error) {
+                  debug(`Filtering invalid line for ${feature.properties.LbEntCru}`)
+                }
               }
               // Convert ID to numeric value
               _.set(feature, 'properties.gid', _.toNumber(feature.properties.gid))
@@ -57,6 +64,7 @@ module.exports = {
               _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
               _.set(feature, 'properties.NomEntVigiCru', feature.properties.LbEntCru) // backward compatibility
             })
+            _.set(item, 'data.features', validFeatures)
           }
         },
         writeSections: {
