@@ -5,6 +5,8 @@
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French flood warning system [Vigicrues](https://www.vigicrues.gouv.fr/)
 
+To get support from **Vigicrues**, use the following contact address: <vigicrues@developpement-durable.gouv.fr>
+
 ## Description
 
 The **k-vigicrues** job allow to scrape flood alerts from the following services: [https://www.vigicrues.gouv.fr/services/1/](https://www.vigicrues.gouv.fr/services/1/). The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) database and more precisely in the collection `vigicrues`.
