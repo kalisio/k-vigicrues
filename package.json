@@ -3,11 +3,11 @@
   "description": "",
   "version": "1.4.0",
   "homepage": "https://github.com/kalisio/k-vigicrues",
+  "type": "module",  
   "keywords": [
     "krawler",
     "kargo",
     "feathers",
-    "feathers-plugin",
     "vigicrues"
   ],
   "license": "MIT",
@@ -31,11 +31,16 @@
     "release:patch": "npm run changelog -- -p && git add CHANGELOG.md && git commit -m \"chore: Updated CHANGELOG.md [skip ci]\" && git push && npm version --force patch",
     "postversion": "git push origin --tags"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@turf/turf": "^6.5.0",
+    "debug": "^4.3.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.3"
+  },
   "devDependencies": {
     "generate-changelog": "^1.8.0"
   },
   "peerDependencies": {
-    "@kalisio/krawler": "1.2.0"
+    "@kalisio/krawler": "2.0.0"
   }
 }

@@ -1,14 +1,14 @@
-const moment = require('moment')
-const _ = require('lodash')
-const turf = require('@turf/turf')
-const makeDebug = require('debug')
+import moment from 'moment'
+import _  from 'lodash'
+import { featureEach, getType, multiLineString, getCoords, cleanCoords, envelope, flatten } from '@turf/turf'
+import makeDebug  from 'debug'
 
 const debug = makeDebug('k-vigicrues')
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
 const ttl = +process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
 
-module.exports = {
+export default {
   id: 'vigicrues',
   store: 'memory',
   options: {
@@ -34,24 +34,24 @@ module.exports = {
             let validFeatures = []
             _.forEach(features, feature => {
               // Ensure clean geometry as some line strings have degenerated lines
-              if (turf.getType(feature) === 'MultiLineString') {
+              if (getType(feature) === 'MultiLineString') {
                 let validLines = []
                 let nbInvalidGeometries = 0
-                turf.featureEach(turf.flatten(feature), line => {
+                featureEach(flatten(feature), line => {
                   try {
-                    turf.cleanCoords(line, { mutate: true })
-                    validLines.push(turf.getCoords(line))
+                    cleanCoords(line, { mutate: true })
+                    validLines.push(getCoords(line))
                   } catch (error) {
                     nbInvalidGeometries++
                   }
                 })
                 if (nbInvalidGeometries > 0) debug(`Filtering ${nbInvalidGeometries} invalid line(s) for ${feature.properties.LbEntCru}`)
                 // Rebuild geometry from the clean line
-                feature.geometry = turf.multiLineString(validLines).geometry
+                feature.geometry = multiLineString(validLines).geometry
                 validFeatures.push(feature)
-              } else if (turf.getType(feature) === 'LineString')  {
+              } else if (getType(feature) === 'LineString')  {
                 try {
-                  turf.cleanCoords(feature, { mutate: true })
+                  cleanCoords(feature, { mutate: true })
                   validFeatures.push(feature)
                 } catch (error) {
                   debug(`Filtering invalid line for ${feature.properties.LbEntCru}`)
@@ -92,7 +92,7 @@ module.exports = {
             let forecastFeatures = []
             const features = _.get(item, 'data.features', [])
             _.forEach(features, feature => {
-              let forecastFeature = turf.envelope(feature)
+              let forecastFeature = envelope(feature)
               _.set(forecastFeature, 'time', moment.utc().toDate())
               _.set(forecastFeature, 'properties.gid', feature.properties.gid) // needed for timeseries
               _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
