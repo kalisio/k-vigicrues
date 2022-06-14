@@ -1,5 +1,5 @@
-import moment from 'moment'
 import _  from 'lodash'
+import moment from 'moment'
 import { featureEach, getType, multiLineString, getCoords, cleanCoords, envelope, flatten } from '@turf/turf'
 import makeDebug  from 'debug'
 
@@ -112,7 +112,7 @@ export default {
     },
     jobs: {
       before: {
-        createStores: [{ id: 'memory' }],
+        createStores: { id: 'memory' },
         connectMongo: {
           url: dbUrl,
           // Required so that client is forwarded from job to tasks
