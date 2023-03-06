@@ -18,4 +18,4 @@ RUN yarn && yarn link @kalisio/krawler
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
 
 # Run the job
-CMD ~/.yarn/bin/krawler --cron "$CRON" --run jobfile.js
+CMD $KRAWLER_BIN --cron "$CRON" --run jobfile.js
