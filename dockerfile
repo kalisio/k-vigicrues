@@ -12,7 +12,7 @@ ENV CRON="0 0 */3 * * *"
 # Copy the job and install the dependencies
 COPY --chown=node:node jobfile.js package.json yarn.lock /opt/job/
 WORKDIR /opt/job
-RUN yarn && yarn link @kalisio/krawler
+RUN yarn && yarn link @kalisio/krawler && yarn cache clean
 
 # Add default healthcheck
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
