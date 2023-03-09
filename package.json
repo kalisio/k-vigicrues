@@ -1,7 +1,7 @@
 {
   "name": "k-vigicrues",
   "description": "",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "homepage": "https://github.com/kalisio/k-vigicrues",
   "type": "module",
   "keywords": [
@@ -36,8 +36,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.3"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "@kalisio/krawler": "2.3.0"
   }
