@@ -1,3 +1,5 @@
+Please refer to GitHub issues for changelog starting from v1.6: https://github.com/kalisio/k-vigicrues/issues.
+
 ### 1.5.0 (2023-03-09)
 
 ##### New Features
