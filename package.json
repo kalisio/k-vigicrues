@@ -34,7 +34,7 @@
     "@turf/turf": "^6.5.0",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "moment": "^2.29.3"
+    "moment": "^2.29.4"
   },
   "devDependencies": {},
   "peerDependencies": {
