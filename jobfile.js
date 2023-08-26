@@ -57,12 +57,12 @@ export default {
                   debug(`Filtering invalid line for ${feature.properties.LbEntCru}`)
                 }
               }
-              // Convert ID to numeric value
-              _.set(feature, 'properties.id', _.toNumber(feature.properties.id))
+              // Convert ID to numeric value. 
+              // Note: Keep gid for backward compatibility (https://github.com/kalisio/k-vigicrues/issues/33)
+              _.set(feature, 'properties.gid', _.toNumber(feature.properties.id))
               // Remove unused ID
               _.unset(feature, 'id')
               _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
-              _.set(feature, 'properties.NomEntVigiCru', feature.properties.LbEntCru) // backward compatibility
             })
             _.set(item, 'data.features', validFeatures)
           }
@@ -70,15 +70,14 @@ export default {
         writeSections: {
           hook: 'updateMongoCollection',
           collection: 'vigicrues-sections',
-          filter: { 'properties.id': '<%= properties.id %>' },
+          filter: { 'properties.gid': '<%= properties.gid %>' },
           upsert : true,
           transform: {
             pick: [
               'type',
               'geometry',
-              'properties.id',
+              'properties.gid',
               'properties.name',
-              'properties.NomEntVigiCru',
               'properties.CdEntCru',
               'properties.CdTCC'
             ],
@@ -94,10 +93,9 @@ export default {
             _.forEach(features, feature => {
               let forecastFeature = envelope(feature)
               _.set(forecastFeature, 'time', moment.utc().toDate())
-              _.set(forecastFeature, 'properties.id', feature.properties.id) // needed for timeseries
+              _.set(forecastFeature, 'properties.gid', feature.properties.gid) // needed for timeseries
               _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
               _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // needed for timeseries
-              _.set(forecastFeature, 'properties.NomEntVigiCru', feature.properties.LbEntCru) // backward compatibility
               forecastFeatures.push(forecastFeature)
             })
             item.data = forecastFeatures
@@ -123,7 +121,7 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-sections',
           indices: [
-            [{ 'properties.id': 1 }, { unique: true }],
+            [{ 'properties.gid': 1 }, { unique: true }],
             { geometry: '2dsphere' }                                                                                                              
           ]
         },
@@ -132,7 +130,7 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-forecasts',
           indices: [
-            [{ time: 1, 'properties.id': 1 }, { unique: true }],
+            [{ time: 1, 'properties.gid': 1 }, { unique: true }],
             { 'properties.NivSituVigiCruEnt': 1 },
             { 'properties.id': 1, 'properties.NivSituVigiCruEnt': 1, time: -1 },
             [{ time: 1 }, { expireAfterSeconds: ttl }] // days in secs                                                                                                         
