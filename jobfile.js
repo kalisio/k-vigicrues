@@ -58,7 +58,7 @@ export default {
                 }
               }
               // Convert ID to numeric value
-              _.set(feature, 'properties.gid', _.toNumber(feature.properties.gid))
+              _.set(feature, 'properties.id', _.toNumber(feature.properties.id))
               // Remove unused ID
               _.unset(feature, 'id')
               _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
@@ -70,13 +70,13 @@ export default {
         writeSections: {
           hook: 'updateMongoCollection',
           collection: 'vigicrues-sections',
-          filter: { 'properties.gid': '<%= properties.gid %>' },
+          filter: { 'properties.id': '<%= properties.id %>' },
           upsert : true,
           transform: {
             pick: [
               'type',
               'geometry',
-              'properties.gid',
+              'properties.id',
               'properties.name',
               'properties.NomEntVigiCru',
               'properties.CdEntCru',
@@ -94,7 +94,7 @@ export default {
             _.forEach(features, feature => {
               let forecastFeature = envelope(feature)
               _.set(forecastFeature, 'time', moment.utc().toDate())
-              _.set(forecastFeature, 'properties.gid', feature.properties.gid) // needed for timeseries
+              _.set(forecastFeature, 'properties.id', feature.properties.id) // needed for timeseries
               _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
               _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // needed for timeseries
               _.set(forecastFeature, 'properties.NomEntVigiCru', feature.properties.LbEntCru) // backward compatibility
@@ -123,7 +123,7 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-sections',
           indices: [
-            [{ 'properties.gid': 1 }, { unique: true }],
+            [{ 'properties.id': 1 }, { unique: true }],
             { geometry: '2dsphere' }                                                                                                              
           ]
         },
@@ -132,9 +132,9 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'vigicrues-forecasts',
           indices: [
-            [{ time: 1, 'properties.gid': 1 }, { unique: true }],
+            [{ time: 1, 'properties.id': 1 }, { unique: true }],
             { 'properties.NivSituVigiCruEnt': 1 },
-            { 'properties.gid': 1, 'properties.NivSituVigiCruEnt': 1, time: -1 },
+            { 'properties.id': 1, 'properties.NivSituVigiCruEnt': 1, time: -1 },
             [{ time: 1 }, { expireAfterSeconds: ttl }] // days in secs                                                                                                         
           ]
         }
