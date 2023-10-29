@@ -59,8 +59,8 @@ export default {
               }
               // Convert ID to numeric value. 
               // Note: Keep gid for backward compatibility (https://github.com/kalisio/k-vigicrues/issues/33)
-              _.set(feature, 'properties.gid', _.toNumber(feature.properties.id))
-              // Remove unused ID
+              _.set(feature, 'properties.gid', _.toNumber(feature.properties.id || feature.properties.gid))
+              // Remove unused ID if any
               _.unset(feature, 'id')
               _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
             })
