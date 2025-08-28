@@ -5,8 +5,8 @@ import makeDebug  from 'debug'
 
 const debug = makeDebug('k-vigicrues')
 
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
-const ttl = +process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/vigicrues'
+const TTL = +process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
 
 function validateFeature (feature) {
   // Check required id/gid properties
@@ -139,7 +139,7 @@ export default {
       before: {
         createStores: { id: 'memory' },
         connectMongo: {
-          url: dbUrl,
+          url: DB_URL,
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
@@ -160,7 +160,7 @@ export default {
             [{ time: 1, 'properties.gid': 1 }, { unique: true }],
             { 'properties.NivSituVigiCruEnt': 1 },
             { 'properties.id': 1, 'properties.NivSituVigiCruEnt': 1, time: -1 },
-            [{ time: 1 }, { expireAfterSeconds: ttl }] // days in secs                                                                                                         
+            [{ time: 1 }, { expireAfterSeconds: TTL }] // days in secs                                                                                                         
           ]
         }
       },
