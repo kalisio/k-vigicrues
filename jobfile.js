@@ -1,5 +1,6 @@
 import _  from 'lodash'
 import moment from 'moment'
+import winston from 'winston'
 import { featureEach, getType, multiLineString, getCoords, cleanCoords, envelope, flatten } from '@turf/turf'
 import makeDebug  from 'debug'
 
@@ -89,10 +90,10 @@ export default {
             _.forEach(features, feature => {
               if (validateFeature(feature)) validFeatures.push(feature)
             })
-          _.set(item, 'data.features', validFeatures)
-        }
-      },
-      log: (logger, item) => {logger.info(`Found ${validFeatures.length} features`)},
+            _.set(item, 'data.features', validFeatures)
+          }
+        },
+        log: (logger, item) => {logger.info(`Found ${_.size(_.get(item, 'data.features'))} features`)},
         writeSections: {
           hook: 'updateMongoCollection',
           collection: 'vigicrues-sections',
