@@ -137,6 +137,9 @@ export default {
     },
     jobs: {
       before: {
+        printEnv: {
+          TTL
+        },
         createStores: { id: 'memory' },
         connectMongo: {
           url: DB_URL,
