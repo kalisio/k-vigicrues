@@ -89,7 +89,8 @@ export default {
             _.forEach(features, feature => {
               if (validateFeature(feature)) validFeatures.push(feature)
             })
-            console.log(`Found ${validFeatures.length} features`)
+            // console.log(`Found ${validFeatures.length} features`)
+            log: (logger, item) => {logger.info(`Found ${validFeatures.length} features`)}
             _.set(item, 'data.features', validFeatures)
           }
         },
@@ -146,6 +147,13 @@ export default {
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
+        createLogger: {
+          loggerPath: 'taskTemplate.logger',
+          Console: {
+            format: winston.format.printf(log => winston.format.colorize().colorize(log.level, `${log.level}: ${log.message}`)),
+            level: 'verbose'
+          }
+        },
         createSectionsCollection: {
           hook: 'createMongoCollection',
           clientPath: 'taskTemplate.client',
@@ -171,11 +179,17 @@ export default {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
+        removeLogger: {
+          loggerPath: 'taskTemplate.logger'
+        },
         removeStores: ['memory']
       },
       error: {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
+        },
+        removeLogger: {
+          loggerPath: 'taskTemplate.logger'
         },
         removeStores: ['memory']
       }
