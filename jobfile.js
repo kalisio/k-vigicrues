@@ -89,11 +89,10 @@ export default {
             _.forEach(features, feature => {
               if (validateFeature(feature)) validFeatures.push(feature)
             })
-            // console.log(`Found ${validFeatures.length} features`)
-            log: (logger, item) => {logger.info(`Found ${validFeatures.length} features`)}
-            _.set(item, 'data.features', validFeatures)
-          }
-        },
+          _.set(item, 'data.features', validFeatures)
+        }
+      },
+      log: (logger, item) => {logger.info(`Found ${validFeatures.length} features`)},
         writeSections: {
           hook: 'updateMongoCollection',
           collection: 'vigicrues-sections',
