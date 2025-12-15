@@ -18,11 +18,11 @@ function validateFeature (feature) {
   _.set(feature, 'properties.gid', _.toNumber(feature.properties.id || feature.properties.gid))
   _.unset(feature, 'id') // Remove unused ID if any
   // Check required LbEntCru property
-  if (!_.has(feature, 'properties.LbEntCru')) {
+  if (!_.has(feature, 'properties.LbEntCru') && !_.has(feature, 'properties.lbentcru')) {
     console.warn('Invalid feature: missing \'LbEntCru\' property')
     return false
   }
-  _.set(feature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
+  _.set(feature, 'properties.name', feature.properties.LbEntCru || feature.properties.lbentcru) // needed for timeseries
   // Check required NivInfViCr property
   if (!_.has(feature, 'properties.NivInfViCr' )) {
     console.warn('Invalid feature: missing \'NivInfViCr\' property')
@@ -50,14 +50,14 @@ function validateFeature (feature) {
         nbInvalidGeometries++
       }
     })
-    if (nbInvalidGeometries > 0) debug(`Filtering ${nbInvalidGeometries} invalid line(s) for ${feature.properties.LbEntCru}`)
+    if (nbInvalidGeometries > 0) debug(`Filtering ${nbInvalidGeometries} invalid line(s) for ${feature.properties.name}`)
     // Rebuild geometry from the clean line
     feature.geometry = multiLineString(validLines).geometry
   } else if (getType(feature) === 'LineString')  {
     try {
       cleanCoords(feature, { mutate: true })
     } catch (error) {
-      console.warn(`Invalid geometry for ${feature.properties.LbEntCru}`)
+      console.warn(`Invalid geometry for ${feature.properties.name}`)
       return false
     }
   }
@@ -121,7 +121,7 @@ export default {
               let forecastFeature = envelope(feature)
               _.set(forecastFeature, 'time', moment.utc().toDate())
               _.set(forecastFeature, 'properties.gid', feature.properties.gid) // needed for timeseries
-              _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru) // needed for timeseries
+              _.set(forecastFeature, 'properties.name', feature.properties.LbEntCru || feature.properties.lbentcru) // needed for timeseries
               _.set(forecastFeature, 'properties.NivSituVigiCruEnt', feature.properties.NivInfViCr) // backward compatibilty
               _.set(forecastFeature, 'properties.risk', feature.properties.NivInfViCr)
               forecastFeatures.push(forecastFeature)
