@@ -34,7 +34,7 @@ done
 
 load_env_files "$WORKSPACE_DIR/development/common/kalisio_dockerhub.enc.env"
 load_value_files "$WORKSPACE_DIR/development/common/KALISIO_DOCKERHUB_PASSWORD.enc.value"
-. "$WORKSPACE_DIR/development/workspaces/jobs/jobs.sh" k-firms
+. "$WORKSPACE_DIR/development/workspaces/jobs/jobs.sh" k-vigicrues
 
 ## Build container
 ##
