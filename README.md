@@ -2,6 +2,7 @@
 
 [![Latest Release](https://img.shields.io/github/v/tag/kalisio/k-vigicrues?sort=semver&label=latest)](https://github.com/kalisio/k-vigicrues/releases)
 [![CI](https://github.com/kalisio/k-vigicrues/actions/workflows/main.yaml/badge.svg)](https://github.com/kalisio/k-vigicrues/actions/workflows/main.yaml)
+[![Quality Gate Status](https://sonar.portal.kalisio.com/api/project_badges/measure?project=kalisio-k-vigicrues&metric=alert_status&token=sqb_cdce2ee6e7404852f3ba469081586bb17a8b643c)](https://sonar.portal.kalisio.com/dashboard?id=kalisio-k-vigicrues)
 [![Maintainability Issues](https://sonar.portal.kalisio.com/api/project_badges/measure?project=kalisio-k-vigicrues&metric=software_quality_maintainability_issues&token=sqb_cdce2ee6e7404852f3ba469081586bb17a8b643c)](https://sonar.portal.kalisio.com/dashboard?id=kalisio-k-vigicrues)
 [![Coverage](https://sonar.portal.kalisio.com/api/project_badges/measure?project=kalisio-k-vigicrues&metric=coverage&token=sqb_cdce2ee6e7404852f3ba469081586bb17a8b643c)](https://sonar.portal.kalisio.com/dashboard?id=kalisio-k-vigicrues)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
